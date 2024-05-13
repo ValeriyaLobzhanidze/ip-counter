@@ -37,6 +37,7 @@ public class App {
         String filePath = args[0];
         int threadNumber = Integer.parseInt((String) props.get(THREAD_NUMBER_PROPERTY));
         int fileSizeChunk = Integer.parseInt((String) props.get(FILE_CHUNK_SIZE_PROPERTY));
+        logger.info("Thread count: {}, file size chunk: {}", threadNumber, fileSizeChunk);
         IpCounter ipCounter = new IpCounter(filePath, threadNumber, fileSizeChunk);
 
         long startTime = System.nanoTime();

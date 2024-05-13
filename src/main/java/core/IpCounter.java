@@ -27,7 +27,7 @@ public class IpCounter {
         BlockingQueue<Runnable> queue = new ArrayBlockingQueue<>(threadAmount * 2);
         ThreadPoolExecutor executor = new ThreadPoolExecutor(
                 threadAmount,
-                threadAmount * 2,
+                threadAmount,
                 5000,
                 TimeUnit.MILLISECONDS,
                 queue,
