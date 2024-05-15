@@ -30,7 +30,7 @@ public class IpCounter {
         while (reader.hasNext()) {
             Optional<String> chunk = reader.next();
             if (chunk.isPresent()) {
-                FileChunkHandler task = new FileChunkHandler(chunk.get(), ips, this::validateIP, this::convertIpToOrdinal,
+                FileChunkHandlerTask task = new FileChunkHandlerTask(chunk.get(), ips, this::validateIP, this::convertIpToOrdinal,
                         readIpCounter);
                 fixedThreadPool.execute(task);
                 logger.info("Memory read: {} %", ((double) memoryReadCounter.get() / fileSize) * 100.0);

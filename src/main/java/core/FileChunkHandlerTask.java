@@ -5,15 +5,15 @@ import java.util.concurrent.atomic.AtomicLong;
 import java.util.function.Function;
 import java.util.function.Predicate;
 
-public class FileChunkHandler implements Runnable {
+public class FileChunkHandlerTask implements Runnable {
     private final String chunk;
     private final ConcurrentBitSet concurrentBitSet;
     private final Predicate<String> stringValidator;
     private final Function<String, Long> stringConverter;
     private final AtomicLong totalStringCounter;
 
-    public FileChunkHandler(String chunk, ConcurrentBitSet concurrentBitSet, Predicate<String> stringValidator,
-                            Function<String, Long> stringConverter, AtomicLong totalStringCounter) {
+    public FileChunkHandlerTask(String chunk, ConcurrentBitSet concurrentBitSet, Predicate<String> stringValidator,
+                                Function<String, Long> stringConverter, AtomicLong totalStringCounter) {
         this.chunk = chunk;
         this.concurrentBitSet = concurrentBitSet;
         this.stringValidator = stringValidator;
