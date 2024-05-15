@@ -8,9 +8,7 @@ import java.io.IOException;
 import java.io.RandomAccessFile;
 import java.nio.MappedByteBuffer;
 import java.nio.channels.FileChannel;
-import java.util.Arrays;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
 public class FileChunkSequence {
     private static final Logger logger = LoggerFactory.getLogger(FileChunkSequence.class);
@@ -45,19 +43,19 @@ public class FileChunkSequence {
             MappedByteBuffer buffer = channel.map(FileChannel.MapMode.READ_ONLY, offset, remainingBytes);
             memoryReadCounter += buffer.capacity();
             offset += buffer.capacity();
-            String stringed = toStr(buffer);
+            StringBuilder stringed = toStrBuilder(buffer);
 
             if (!remainder.isEmpty()) {
-                stringed = remainder + stringed;
+                stringed.insert(0, remainder);
                 remainder = "";
             }
 
             if (!stringed.isEmpty() && stringed.charAt(stringed.length() - 1) != LINE_BREAK) {
-                stringed = removeAllAfterLastBreak(stringed);
+                stringed = new StringBuilder(removeAllAfterLastBreak(stringed));
             }
 
             logger.info("Memory read: {} % ; {}/{}", ((double) memoryReadCounter / fileSize) * 100.0, memoryReadCounter, fileSize);
-            return Optional.of(stringed);
+            return Optional.of(stringed.toString());
         } catch (IOException e) {
             String errorMsg = String.format("Error occurred while reading the file: %s with offset: %s", filePath, offset);
             logger.error(errorMsg, e);
@@ -82,23 +80,23 @@ public class FileChunkSequence {
         return Optional.empty();
     }
 
-    private String removeAllAfterLastBreak(String source) {
-        String[] parts = source.split("\n");
-        if (parts.length == 0) {
-            return source;
+    private String removeAllAfterLastBreak(StringBuilder source) {
+        int lastBreak = source.lastIndexOf(String.valueOf(LINE_BREAK));
+        if (lastBreak == -1) {
+            return source.toString();
         }
 
-        remainder = parts[parts.length - 1];
-        return Arrays.stream(parts, 0, parts.length - 1)
-                .collect(Collectors.joining("\n"));
+        String result = source.substring(0, lastBreak);
+        remainder = source.substring(lastBreak + 1);;
+        return result;
     }
 
-    private String toStr(MappedByteBuffer buffer) {
+    private StringBuilder toStrBuilder(MappedByteBuffer buffer) {
         StringBuilder innerBuffer = new StringBuilder();
         while (buffer.hasRemaining()) {
             char symbol = (char) buffer.get();
             innerBuffer.append(symbol);
         }
-        return innerBuffer.toString();
+        return innerBuffer;
     }
 }
