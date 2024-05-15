@@ -3,15 +3,17 @@ package core;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.io.*;
+import java.io.IOException;
+import java.io.InputStream;
 import java.nio.file.Files;
 import java.nio.file.Paths;
+import java.util.Objects;
 import java.util.Properties;
 
 public class App {
     private static final Logger logger = LoggerFactory.getLogger(App.class);
     private static final String THREAD_NUMBER_PROPERTY = "thread.number";
-    private static final String FILE_CHUNK_SIZE_PROPERTY = "file.chunkSizeBit";
+    private static final String CONFIG_PROPERTY_FILE_NAME = "config.properties";
 
     public static void main(String[] args) {
         if (args.length == 0) {
@@ -25,28 +27,26 @@ public class App {
         }
 
         Properties props = new Properties();
-        try (InputStream inputStream = App.class.getClassLoader().getResourceAsStream("config.properties")) {
-            if (inputStream == null) {
-                logger.error("Cannot find configuration file: config.properties");
-                throw new IOException("Cannot find configuration file: config.properties");
-            }
-            props.load(inputStream);
+        try (InputStream inputStream = App.class.getClassLoader().getResourceAsStream(CONFIG_PROPERTY_FILE_NAME)) {
+            Objects.requireNonNull(props).load(inputStream);
         } catch (IOException e) {
-            throw new IllegalStateException("Error loading config.properties file", e);
+            String msg = "Error loading config file";
+            logger.error(msg);
+            throw new IllegalStateException(msg, e);
         }
+
         String filePath = args[0];
         int threadNumber = Integer.parseInt((String) props.get(THREAD_NUMBER_PROPERTY));
-        int fileSizeChunk = Integer.parseInt((String) props.get(FILE_CHUNK_SIZE_PROPERTY));
-        logger.info("Thread count: {}, file size chunk: {}", threadNumber, fileSizeChunk);
-        IpCounter ipCounter = new IpCounter(filePath, threadNumber, fileSizeChunk);
+        IpCounter ipCounter = new IpCounter(filePath, threadNumber);
 
         long startTime = System.nanoTime();
         long uniqueIps = ipCounter.countUniques();
         long endTime = System.nanoTime() - startTime;
         long allIps = ipCounter.getAllNumbersRead();
 
-        System.out.printf("Read %s IPs\n", allIps);
+        System.out.println();
+        System.out.printf("Read %s lines\n", allIps);
         System.out.printf("Unique IP numbers found: %s\n", uniqueIps);
-        System.out.printf("Time elapsed: %s ms\n", endTime / 1_000_000);
+        System.out.printf("Time elapsed: %s minutes\n", endTime / 1_000_000.0 / 60_000.0);
     }
 }

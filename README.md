@@ -1,6 +1,7 @@
 # Unique IPs Counter
 
 This is my implementation of test task for Ecwid: https://github.com/Ecwid/new-job/blob/master/IP-Addr-Counter.md
+(Tested on 120Gb file, see the link above)
 
 **To launch the app do the following**:
 
