@@ -1,10 +1,8 @@
-import core.App;
 import core.IpCounter;
 import org.junit.jupiter.api.Test;
 
 import java.io.File;
 import java.net.URL;
-import java.util.Arrays;
 
 public class IpCounterTest {
     @Test
@@ -16,6 +14,5 @@ public class IpCounterTest {
         System.out.println("Uniques: " + uniques);
         System.out.println("All: " + all);
         System.out.println("File size: " + new File(url.getPath()).length());
-        System.out.println("Bytes read: " + counter.getAllMemoryRead());
     }
 }

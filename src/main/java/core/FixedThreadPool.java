@@ -42,7 +42,11 @@ public class FixedThreadPool {
         executor.shutdown();
     }
 
-    public boolean awaitTermination(long timeout, TimeUnit unit) throws InterruptedException {
-        return executor.awaitTermination(timeout, unit);
+    public boolean awaitTermination(long timeout, TimeUnit unit) {
+        try {
+            return executor.awaitTermination(timeout, unit);
+        } catch (InterruptedException e) {
+            throw new RuntimeException(e);
+        }
     }
 }
