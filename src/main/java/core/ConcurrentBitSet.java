@@ -3,6 +3,11 @@ package core;
 import java.util.BitSet;
 import java.util.concurrent.atomic.AtomicLong;
 
+/**
+ * Class that allows to store much more indexes than standard BitSet and also can be used in multithread environments;
+ * It is 'concurrent' rather than 'synchronized' since only particular buckets of this structure gets locked on reading,
+ * allowing other thread read and write to other buckets.
+ * */
 public class ConcurrentBitSet {
     private final static long MAX_BITS = 4294967296L;
     private final static int BITSET_CHUNK_AMOUNT = 20;

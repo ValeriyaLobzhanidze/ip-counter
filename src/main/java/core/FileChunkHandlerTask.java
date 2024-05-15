@@ -5,6 +5,10 @@ import java.util.concurrent.atomic.AtomicLong;
 import java.util.function.Function;
 import java.util.function.Predicate;
 
+/**
+ * Task that is supposed to be pushed onto thread pool queue;
+ * Handles one file chunk;
+ * */
 public class FileChunkHandlerTask implements Runnable {
     private final String chunk;
     private final ConcurrentBitSet concurrentBitSet;
