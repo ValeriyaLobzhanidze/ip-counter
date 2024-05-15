@@ -26,7 +26,7 @@ The best result I could get on reading 120Gb file so far is **12.9 minutes** on 
 2. **Buffer size**
    I read the file in chunks using buffer, which size impacts performance in non-linear way:
    2Mb buffer performed better than 1Mb, but increasing it to 10Mb made things much worse in terms of not only space, but time
-   ![Things got worse on 10Mb buffer](images/pic1.jpg)
+   ![Things got worse on 10Mb buffer](images/pic2.png)
 
 3. **Amount of buckets in ConcurrentBitSet**
    I slightly modified standard version of BitSet (see ConcurrentBitSet) to store larger set of IPs and use it in multithread env.
