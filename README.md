@@ -10,7 +10,7 @@ Service optimized specifically for large files (Tested on 120Gb file)
 2. mvn clean package -DskipTests
 3. java -jar target/ip-counter-1.0.jar you_ips_file_path
 
-Here is some benchmarks and metrics:
+**Here is some benchmarks and metrics:**
 
 The best result I could get on reading 120Gb file so far is **12.9 minutes** on my machine (MacBook Pro M1/32GB)
 ![Memory and time of (almost) the best try](images/pic1.jpg)
