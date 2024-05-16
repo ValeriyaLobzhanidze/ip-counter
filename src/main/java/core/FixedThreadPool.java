@@ -3,7 +3,7 @@ package core;
 import java.util.concurrent.*;
 
 /**
- * Class that help to control exact number of threads in the thread pool;
+ * Class that helps to control exact number of threads in the thread pool;
  *
  * Though we could just use ThreadPoolExecutor with CallerRunPolicy, this approach has its drawbacks and limitations;
  * In particular whenever BlockingQueue is full ThreadPoolExecutor with such a policy would just execute the task in the caller thread,
